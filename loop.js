@@ -15,12 +15,11 @@ let ctx = canvas.getContext("2d");
 
 let heartImage = null;
 
-let img = new Image();   // Create new img element
+let img = new Image();
 img.addEventListener("load", function() {
     heartImage = img;
-  // execute drawImage statements here
 }, false);
-img.src = "heart.png"; // Set source path
+img.src = "heart.png";
 
 window.addEventListener("keydown", function(e) {
     if(e.key == "a") {
