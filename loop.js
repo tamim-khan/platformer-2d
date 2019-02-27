@@ -84,9 +84,11 @@ function draw() {
 }
 
 function loop() {
-    processInput();
-    update();
-    draw();
+    if(areAllAssetsLoaded()) {
+        processInput();
+        update();
+        draw();
+    }
 
     requestAnimationFrame(loop);
 }
