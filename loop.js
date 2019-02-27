@@ -13,13 +13,7 @@ let player = {
 let canvas = document.getElementById("view");
 let ctx = canvas.getContext("2d");
 
-let heartImage = null;
-
-let img = new Image();
-img.addEventListener("load", function() {
-    heartImage = img;
-}, false);
-img.src = "heart.png";
+let heartImage = loadImage("heart.png");
 
 window.addEventListener("keydown", function(e) {
     if(e.key == "a") {
@@ -75,10 +69,6 @@ function draw() {
     
     //ctx.fillStyle = "red";
     //ctx.fillRect(player.x, player.y, 32, 32);
-
-    if(!heartImage) {
-        return;
-    }
 
     ctx.drawImage(heartImage, player.x, player.y);
 }
