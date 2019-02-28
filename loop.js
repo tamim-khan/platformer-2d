@@ -15,6 +15,28 @@ let ctx = canvas.getContext("2d");
 
 let heartImage = loadImage("heart.png");
 
+let spriteInfo = {
+    image: loadImage("assets/player.png"),
+    
+    frameWidth: 128,
+    frameHeight: 128,
+
+    anims: {
+        run: {
+            startFrame: 6,
+            length: 7,
+            frameTime: 0.08
+        }
+    },
+
+    //onLoop: function(sprite) {
+    //}
+};
+
+let sprite = createSprite(spriteInfo);
+
+playAnim(sprite, "run");
+
 window.addEventListener("keydown", function(e) {
     if(e.key == "a") {
         input.left = true;
@@ -41,19 +63,19 @@ window.addEventListener("keyup", function(e) {
 
 function processInput() {
     if(input.left) {
-        player.x -= 4;
+        sprite.x -= 4;
         console.log("Left");
     } //else
      if(input.right) {
-        player.x += 4;
+        sprite.x += 4;
         console.log("Right");
     } //else
      if(input.jump) {
-        player.y -= 4;
+        sprite.y -= 4;
         console.log("Jump");
     } //else 
     if(input.duck) {
-        player.y += 5;
+        sprite.y += 5;
         console.log("Jump");
     } //else {
         //console.log("Nothing");
@@ -61,7 +83,7 @@ function processInput() {
 }
 
 function update () {
-
+    updateSprites();
 }
 
 function draw() {
@@ -70,7 +92,14 @@ function draw() {
     //ctx.fillStyle = "red";
     //ctx.fillRect(player.x, player.y, 32, 32);
 
-    ctx.drawImage(heartImage, player.x, player.y);
+    //ctx.drawImage(sprite, player.x, player.y);
+
+    let camera = {
+        x: 100,
+        y: 100
+    };
+
+    drawSprites(camera);
 }
 
 function loop() {
