@@ -14,5 +14,5 @@ function loadImage(filename) {
 }
 
 function areAllAssetsLoaded() {
-  return loadingImagesCount == 0;
+  return loadingImagesCount == 0 && tileMap;
 }
