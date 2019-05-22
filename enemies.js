@@ -3,6 +3,7 @@ const ENEMY_DRAG_FACTOR = 0.9;
 const ENEMY_CLOSE_ENOUGH_DISTANCE = 200;
 const ENEMY_REPULSION_ACCEL = 5;
 const ENEMY_RADIUS = 64;
+const ENEMY_SHOOT_COOLDOWN = 2.0;
 
 const ENEMY_ANIMS = {
   idle: {
@@ -50,7 +51,8 @@ function createEnemy(x, y, color) {
     sprite: createSprite(ENEMY_SPRITE_INFO[color]),
     color: color,
     dx: 0,
-    dy: 0
+    dy: 0,
+    cooldownTimer: 0
   };
 
   playAnim(enemy.sprite, "idle");
@@ -112,6 +114,10 @@ function updateEnemies() {
       }
     }
 
+    if (enemy.cooldownTimer > 0) {
+      enemy.cooldownTimer -= SEC_PER_FRAME;
+    }
+
     if (enemy.state) {
       enemy.state(enemy);
     }
@@ -151,6 +157,9 @@ function enemyFireRockets(enemy) {
     enemy.state = enemyChasePlayer;
     return;
   }
-
-  // TODO: Implement rockets
+  const angle = Math.atan2(distY, distX);
+  if (enemy.cooldownTimer <= 0) {
+    enemy.cooldownTimer += ENEMY_SHOOT_COOLDOWN;
+    createRocket(enemy.sprite.x, enemy.sprite.y, angle);
+  }
 }
