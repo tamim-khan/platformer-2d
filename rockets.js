@@ -74,6 +74,15 @@ function updateRockets() {
 function drawRockets(camera) {
   for (let i = 0; i < rockets.length; ++i) {
     let rocket = rockets[i];
-    ctx.drawImage(ROCKET_IMAGE, rocket.x - camera.x, rocket.y - camera.y);
+    // draw rotated rockets
+    ctx.save();
+    ctx.translate(rocket.x - camera.x, rocket.y - camera.y);
+    ctx.rotate(rocket.angle);
+    ctx.drawImage(
+      ROCKET_IMAGE,
+      -ROCKET_IMAGE.width / 2,
+      -ROCKET_IMAGE.height / 2
+    );
+    ctx.restore();
   }
 }
