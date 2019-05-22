@@ -1,3 +1,9 @@
+const HEART_IMAGE = loadImage("assets/heart.png");
+const EMPTY_HEART_IMAGE = loadImage("assets/empty_heart.png");
+
+const HEART_DRAW_OFFSET_X = 10;
+const HEART_DRAW_OFFSET_Y = 10;
+
 let player = {
   sprite: createSprite({
     image: loadImage("assets/player.png"),
@@ -16,6 +22,9 @@ let player = {
 
   dx: 0,
   dy: 0,
+
+  maxHp: 5,
+  hp: 5,
 
   grounded: false
 };
@@ -56,5 +65,18 @@ function updatePlayer() {
     player.sprite.y += player.dy;
   } else {
     player.dy = 0;
+  }
+}
+
+function drawPlayerHp() {
+  for (let i = 0; i < player.maxHp; ++i) {
+    const x = HEART_DRAW_OFFSET_X + i * HEART_IMAGE.width;
+    const y = HEART_DRAW_OFFSET_Y;
+
+    if (i > player.hp) {
+      ctx.drawImage(EMPTY_HEART_IMAGE, x, y);
+    } else {
+      ctx.drawImage(HEART_IMAGE, x, y);
+    }
   }
 }

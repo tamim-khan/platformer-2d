@@ -23,6 +23,7 @@ function draw() {
 
   drawTilemap(camera);
   drawSprites(camera);
+  drawPlayerHp();
 }
 
 function loop() {
