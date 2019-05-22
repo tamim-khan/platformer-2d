@@ -13,7 +13,7 @@ let player = {
 let canvas = document.getElementById("view");
 let ctx = canvas.getContext("2d");
 
-let heartImage = loadImage("heart.png");
+let heartImage = loadImage("assets/heart.png");
 
 let spriteInfo = {
   image: loadImage("assets/player.png"),
