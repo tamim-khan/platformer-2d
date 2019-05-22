@@ -1,6 +1,8 @@
 const ENEMY_ACCEL = 2;
 const ENEMY_DRAG_FACTOR = 0.9;
 const ENEMY_CLOSE_ENOUGH_DISTANCE = 200;
+const ENEMY_REPULSION_ACCEL = 5;
+const ENEMY_RADIUS = 64;
 
 const ENEMY_ANIMS = {
   idle: {
@@ -74,7 +76,41 @@ function removeEnemy(enemy) {
 function updateEnemies() {
   for (let i = 0; i < enemies.length; ++i) {
     let enemy = enemies[i];
+    // Collision with other enemies
+    for (let j = i + 1; j < enemies.length; ++j) {
+      let otherEnemy = enemies[j];
 
+      const fw2 = enemy.sprite.info.frameWidth / 2;
+      const fh2 = enemy.sprite.info.frameHeight / 2;
+
+      if (
+        collideCircles(
+          enemy.sprite.x + fw2,
+          enemy.sprite.y + fh2,
+          ENEMY_RADIUS,
+          otherEnemy.sprite.x + fw2,
+          otherEnemy.sprite.y + fh2,
+          ENEMY_RADIUS
+        )
+      ) {
+        const distX = enemy.sprite.x + fw2 - (otherEnemy.sprite.x + fw2);
+        const distY = enemy.sprite.y + fh2 - (otherEnemy.sprite.y + fh2);
+
+        // direction matters
+        const angle = Math.atan2(distY, distX);
+
+        const ddx = Math.cos(angle) * ENEMY_REPULSION_ACCEL;
+        const ddy = Math.sin(angle) * ENEMY_REPULSION_ACCEL;
+
+        enemy.dx += ddx;
+        enemy.dy += ddy;
+
+        otherEnemy.dx -= ddx;
+        otherEnemy.dy -= ddy;
+      }
+    }
+
+    // Collision with player
     const distX = player.sprite.x - enemy.sprite.x;
     const distY = player.sprite.y - enemy.sprite.y;
     const dist2 = distX * distX + distY * distY;
@@ -86,6 +122,7 @@ function updateEnemies() {
       enemy.dy += Math.sin(angle) * ENEMY_ACCEL;
     }
 
+    // Updating enemy speed
     enemy.sprite.x += enemy.dx;
     enemy.sprite.y += enemy.dy;
 
