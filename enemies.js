@@ -1,3 +1,7 @@
+const ENEMY_ACCEL = 2;
+const ENEMY_DRAG_FACTOR = 0.9;
+const ENEMY_CLOSE_ENOUGH_DISTANCE = 200;
+
 const ENEMY_ANIMS = {
   idle: {
     startFrame: 0,
@@ -71,15 +75,21 @@ function updateEnemies() {
   for (let i = 0; i < enemies.length; ++i) {
     let enemy = enemies[i];
 
-    const angle = Math.atan2(
-      player.sprite.y - enemy.sprite.y,
-      player.sprite.x - enemy.sprite.x
-    );
+    const distX = player.sprite.x - enemy.sprite.x;
+    const distY = player.sprite.y - enemy.sprite.y;
+    const dist2 = distX * distX + distY * distY;
 
-    enemy.dx = Math.cos(angle) * ENEMY_MOVE_SPEED;
-    enemy.dy = Math.sin(angle) * ENEMY_MOVE_SPEED;
+    if (dist2 < ENEMY_CLOSE_ENOUGH_DISTANCE * ENEMY_CLOSE_ENOUGH_DISTANCE) {
+      const angle = Math.atan2(distY, distX);
+
+      enemy.dx += Math.cos(angle) * ENEMY_ACCEL;
+      enemy.dy += Math.sin(angle) * ENEMY_ACCEL;
+    }
 
     enemy.sprite.x += enemy.dx;
     enemy.sprite.y += enemy.dy;
+
+    enemy.dx *= ENEMY_DRAG_FACTOR;
+    enemy.dy *= ENEMY_DRAG_FACTOR;
   }
 }
