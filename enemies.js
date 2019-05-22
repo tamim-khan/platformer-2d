@@ -58,6 +58,8 @@ function createEnemy(x, y, color) {
   enemy.sprite.x = x;
   enemy.sprite.y = y;
 
+  enemy.state = enemyChasePlayer;
+
   enemies.push(enemy);
 
   return enemy;
@@ -110,16 +112,8 @@ function updateEnemies() {
       }
     }
 
-    // Collision with player
-    const distX = player.sprite.x - enemy.sprite.x;
-    const distY = player.sprite.y - enemy.sprite.y;
-    const dist2 = distX * distX + distY * distY;
-
-    if (dist2 < ENEMY_CLOSE_ENOUGH_DISTANCE * ENEMY_CLOSE_ENOUGH_DISTANCE) {
-      const angle = Math.atan2(distY, distX);
-
-      enemy.dx += Math.cos(angle) * ENEMY_ACCEL;
-      enemy.dy += Math.sin(angle) * ENEMY_ACCEL;
+    if (enemy.state) {
+      enemy.state(enemy);
     }
 
     // Updating enemy speed
@@ -129,4 +123,34 @@ function updateEnemies() {
     enemy.dx *= ENEMY_DRAG_FACTOR;
     enemy.dy *= ENEMY_DRAG_FACTOR;
   }
+}
+
+// enemy states
+
+function enemyChasePlayer(enemy) {
+  const distX = player.sprite.x - enemy.sprite.x;
+  const distY = player.sprite.y - enemy.sprite.y;
+
+  const dist2 = distX * distX + distY * distY;
+
+  if (dist2 < ENEMY_CLOSE_ENOUGH_DISTANCE * ENEMY_CLOSE_ENOUGH_DISTANCE) {
+    enemy.state = enemyFireRockets;
+    return;
+  }
+
+  const angle = Math.atan2(distY, distX);
+
+  enemy.dx += Math.cos(angle) * ENEMY_ACCEL;
+  enemy.dy += Math.sin(angle) * ENEMY_ACCEL;
+}
+
+function enemyFireRockets(enemy) {
+  const dist2 = distX * distX + distY * distY;
+
+  if (dist2 > ENEMY_CLOSE_ENOUGH_DISTANCE * ENEMY_CLOSE_ENOUGH_DISTANCE) {
+    enemy.state = enemyChasePlayer;
+    return;
+  }
+
+  // TODO: Implement rockets
 }
