@@ -4,6 +4,14 @@ const EMPTY_HEART_IMAGE = loadImage("assets/empty_heart.png");
 const HEART_DRAW_OFFSET_X = 10;
 const HEART_DRAW_OFFSET_Y = 10;
 
+const PLAYER_RECT = {
+  // tweak
+  x: 40,
+  y: 0,
+  w: 20,
+  h: 128
+};
+
 let player = {
   sprite: createSprite({
     image: loadImage("assets/player.png"),

@@ -7,3 +7,9 @@ function collideCircles(ax, ay, ar, bx, by, br) {
   const distY = by - ay;
   return distX * distX + distY * distY < (ar + br) * (ar + br);
 }
+
+function collideRects(ax, ay, aw, ah, bx, by, bw, bh) {
+  if (ax + aw < bx || bx + bw < ax) return false;
+  if (ay + ah < by || by + bh < ay) return false;
+  return true;
+}
