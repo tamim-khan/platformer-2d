@@ -28,7 +28,7 @@ function draw() {
 }
 
 function loop() {
-  if (!areAllAssetsLoaded()) {
+  if (areAllAssetsLoaded()) {
     processInput();
     update();
     draw();

@@ -4,6 +4,9 @@ const ENEMY_CLOSE_ENOUGH_DISTANCE = 200;
 const ENEMY_REPULSION_ACCEL = 5;
 const ENEMY_RADIUS = 64;
 const ENEMY_SHOOT_COOLDOWN = 2.0;
+const ENEMY_MOVE_SPEED = 5;
+
+let enemies = [];
 
 const ENEMY_ANIMS = {
   idle: {
@@ -41,10 +44,6 @@ const ENEMY_SPRITE_INFO = {
     anims: ENEMY_ANIMS
   }
 };
-
-const ENEMY_MOVE_SPEED = 5;
-
-let enemies = [];
 
 function createEnemy(x, y, color) {
   let enemy = {

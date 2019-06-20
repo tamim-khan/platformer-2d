@@ -5,16 +5,12 @@ const OBJECT_LAYER_NAME = "Objects";
 
 const OBJECT_TILESET_NAME = "objects";
 
-const PLAYER_OBJECT_TYPE = "player";
-
 let tileMap = null;
 
 function onTileMapLoaded(name, data) {
   tileMap = data;
 
-  loadImage("assets/" + tileMap.tilesets[0].image, function(image) {
-    tileMap.image = image;
-  });
+  tileMap.image = loadImage("assets/" + tileMap.tilesets[0].image);
 
   for (let i = 0; i < tileMap.layers.length; ++i) {
     let layer = tileMap.layers[i];
@@ -46,8 +42,20 @@ function onTileMapLoaded(name, data) {
       object.type = tile.type;
     }
 
-    if (object.type == PLAYER_OBJECT_TYPE) {
-      initPlayer(object.x, object.y - object.height);
+    if (object.type == "player") {
+      // TODO: Init player function
+      player.sprite.x = object.x;
+      player.sprite.y = object.y;
+      player.maxHp = findTiledObjPropety(object, "maxHp");
+      player.hp = player.maxHp;
+    } //else if(object.)
+  }
+}
+
+function findTiledObjPropety(object, name) {
+  for (let i = 0; i < object.properties.length; ++i) {
+    if (object.properties[i].name == name) {
+      return object.properties[i].value;
     }
   }
 }
